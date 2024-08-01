@@ -1,0 +1,23 @@
+Aviato - a ReAct-based system for exploring and planning travel
+Submission for Purplefish take-home assignment project
+Created by Jose C. Rivera
+Begun Aug. 1, 2024
+-------------------------
+Notes/Assumptions
+* Scope of the tool - I'm choosing to focus this system on the domain of travel as opposed to being a fully open chat agent
+Reasons:
+* ChatGPT already exists, and it's less interesting to attempt a rebuild of another general purpose system
+* Given the directive to use 3 or more specific tools, accessing public APIs, such as for weather or stock data, this feels like a chance to do a deep-dive into a choice of domain instead of reinventing GPT
+
+Architecture decision:
+* I'm choosing to configure this tool to run as a Docker image
+Reasons:
+* In order to ensure this will run on another system besides my own, I'll develop and test it within a Docker container, so I'll know that run with the same behavior elsewhere
+
+Framework decisions:
+* Rails
+* NextJS
+Reasons:
+* Personal familiarity
+* Availability of tools for rapid prototype development (rails new app-name, etc)
+
