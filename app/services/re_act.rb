@@ -124,6 +124,8 @@ class ReAct
       get_weather(params)
     when"evaluate_expression"
       evaluate_expression(params)
+    when "get_current_time"
+      get_current_time(params)
     else
       "Action not recognized"
     end
@@ -216,6 +218,18 @@ class ReAct
             "required": ["expression"]
           }
         }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_current_time",
+          "description": "Get the current system date and time",
+          "parameters": {
+            "type": "object",
+            "properties": {
+            }
+          }
+        }
       }
     ]
   end
@@ -280,4 +294,7 @@ class ReAct
     end
   end
 
+  def get_current_time(params)
+    Time.now
+  end
 end
