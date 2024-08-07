@@ -47,3 +47,7 @@ group :development do
 end
 
 gem 'rack-cors'
+gem 'ruby-openai'
+gem 'httparty'
+
+gem 'dotenv-rails', groups: [:development, :test]

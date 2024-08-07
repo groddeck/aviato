@@ -9,11 +9,6 @@ Reasons:
 * ChatGPT already exists, and it's less interesting to attempt a rebuild of another general purpose system
 * Given the directive to use 3 or more specific tools, accessing public APIs, such as for weather or stock data, this feels like a chance to do a deep-dive into a choice of domain instead of reinventing GPT
 
-Architecture decision:
-* I'm choosing to configure this tool to run as a Docker image
-Reasons:
-* In order to ensure this will run on another system besides my own, I'll develop and test it within a Docker container, so I'll know that run with the same behavior elsewhere
-
 Framework decisions:
 * Rails
 * NextJS
@@ -21,3 +16,24 @@ Reasons:
 * Personal familiarity
 * Availability of tools for rapid prototype development (rails new app-name, etc)
 
+After iteratively working through a basic chat interface, and tweaking on that with openai chatgpt, I was able to test the main concepts and connect to the back-end...
+But upon trying Vercel's prompt driven ux creator, I was highly impressed by the very first output. I'll have to decide between the two alternatives.
+
+I ended up starting with a ui built with guidance from ChatGPT for the main chat window, but supplmenting with additional requests from Vercel for individual components.
+I've tended to lean more back-end usually, so I often rely on a lot of documentation while doing frontend work. AI chat helped me create a reasonably smooth looking UI a lot faster.
+
+I decided to implement a few tools:
+* Flight booking information from Amadeus API
+* Weather data from Open Meteo
+* Geo Location data (needed as input for Open Meteo) from Open Street Map - this ended up showing an interesting interaction between nested tool calls
+* Math using ruby mathematical expression evaluation locally
+
+For widgets, I decided to try implementing a few, using Vercel generated chat widget card components accepting structured data:
+* Weather
+* Flights
+
+For any response that includes either a weather report or flight options, I added another call to ask Chat GPT to restructure that data as JSON in order to feed it into the widget.
+
+My ReAct service design is based on the idea that successive tool calls and requests to augment the plan with new data or analysis can shape the overall plan and thought process until a final answer is possible.
+
+I used ChatGPT's tools parameter in the query to specify that I want the agent to fill in any missing data with function calls. I also, first, created a method to summarize the current goal in order to pass a succinct, well-defined task, given all the current data collected so far, to the delegate process. Early on, I saw the issue that ChatGPT sometimes saw prior messages in the chat history as still needing to be answered. But I also didn't want to eliminate them altogether, since prior chat history could be important context for a user-entered follow-up question, such as "What is the weather for that city today?" - referring back to a prior exchange.
