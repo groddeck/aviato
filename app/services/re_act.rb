@@ -67,7 +67,7 @@ class ReAct
 
   def completion(messages, use_tools)
     parameters = {
-      model: "gpt-4",
+      model: "gpt-4-turbo",
       messages: [
         {role: 'system', content: 'Complete the user-requested task or perform a tool call to get the information needed to complete the task'}
       ] + messages,
@@ -124,6 +124,8 @@ class ReAct
       get_weather(params)
     when"evaluate_expression"
       evaluate_expression(params)
+    when "get_current_time"
+      get_current_time(params)
     else
       "Action not recognized"
     end
@@ -216,11 +218,28 @@ class ReAct
             "required": ["expression"]
           }
         }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "get_current_time",
+          "description": "Get the current system date and time",
+          "parameters": {
+            "type": "object",
+            "properties": {
+            }
+          }
+        }
       }
     ]
   end
 
   def get_flight_info(params)
+    puts
+    puts ">>> flight params:"
+    puts params
+    puts
+
     departure = params[:from]
     arrival = params[:to]
     date = params[:date]
@@ -235,7 +254,7 @@ class ReAct
 
     url = "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=#{departure}&destinationLocationCode=#{arrival}&departureDate=#{date}&adults=1&currencyCode=USD"
     res = `curl '#{url}' -H 'Authorization: Bearer #{access_token}'`
-    JSON.parse(res)['data'].map{|flight| flight.slice("itineraries", "price")}[..9]
+    JSON.parse(res)['data'].map{|flight| flight.slice("itineraries", "price")}[..50]
   end
 
   def get_geo(params)
@@ -280,4 +299,7 @@ class ReAct
     end
   end
 
+  def get_current_time(params)
+    Time.now
+  end
 end
