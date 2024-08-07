@@ -105,6 +105,8 @@ rails s -p 3001
 ### Accessing the Application
 
 - Open your browser and go to `http://localhost:3001` to use the chat tool.
+- Aviato is an AI chat tool, specializing in information about travel.
+- Try asking about the weather in a desired destination, or about flight availability, price, etc.
 
 ## License
 
