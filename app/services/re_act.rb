@@ -67,7 +67,7 @@ class ReAct
 
   def completion(messages, use_tools)
     parameters = {
-      model: "gpt-4",
+      model: "gpt-4-turbo",
       messages: [
         {role: 'system', content: 'Complete the user-requested task or perform a tool call to get the information needed to complete the task'}
       ] + messages,
@@ -235,6 +235,11 @@ class ReAct
   end
 
   def get_flight_info(params)
+    puts
+    puts ">>> flight params:"
+    puts params
+    puts
+
     departure = params[:from]
     arrival = params[:to]
     date = params[:date]
@@ -249,7 +254,7 @@ class ReAct
 
     url = "https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=#{departure}&destinationLocationCode=#{arrival}&departureDate=#{date}&adults=1&currencyCode=USD"
     res = `curl '#{url}' -H 'Authorization: Bearer #{access_token}'`
-    JSON.parse(res)['data'].map{|flight| flight.slice("itineraries", "price")}[..9]
+    JSON.parse(res)['data'].map{|flight| flight.slice("itineraries", "price")}[..50]
   end
 
   def get_geo(params)
